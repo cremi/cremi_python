@@ -13,13 +13,13 @@ class Annotations:
 
     def add_annotation(self, id, type, location):
 
-        self.__types[id] = type
+        self.__types[id] = type.encode('utf8')
         self.__locations[id] = location
 
     def add_comment(self, id, comment):
 
         self.__check(id)
-        self.comments[id] = comment
+        self.comments[id] = comment.encode('utf8')
 
     def set_pre_post_partners(self, pre_id, post_id):
 
