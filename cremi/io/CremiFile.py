@@ -44,6 +44,10 @@ class CremiFile(object):
 
         return (volume, resolution, offset, comment)
 
+    def __has_volume(self, ds_name):
+
+        return ds_name in self.h5file
+
     def write_raw(self, raw, resolution, comment = None):
         """Write a raw volume with the given resolution.
         The resolution is the size of a voxel (depth, height, width) in nm.
@@ -92,6 +96,26 @@ class CremiFile(object):
         if len(annotations.pre_post_partners) > 0:
             self.__create_group("/annotations/presynaptic_site")
             self.h5file.create_dataset("/annotations/presynaptic_site/partners", data=annotations.pre_post_partners, dtype=np.uint64)
+
+    def has_raw(self):
+        """Check if this file contains a raw volume.
+        """
+        return self.__has_volume("/volumes/raw")
+
+    def has_neuron_ids(self):
+        """Check if this file contains neuron ids.
+        """
+        return self.__has_volume("/volumes/labels/neuron_ids")
+
+    def has_clefts(self):
+        """Check if this file contains synaptic clefts.
+        """
+        return self.__has_volume("/volumes/labels/clefts")
+
+    def has_annotations(self):
+        """Check if this file contains synaptic partner annotations.
+        """
+        return "/annotations" in self.h5file
 
     def read_raw(self):
         """Read the raw volume.

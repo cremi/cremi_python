@@ -8,6 +8,12 @@ import random
 # Open a file for reading
 file = CremiFile("example.hdf", "r")
 
+# Check the content of the datafile
+print "Has raw: " + str(file.has_raw())
+print "Has neuron ids: " + str(file.has_neuron_ids())
+print "Has clefts: " + str(file.has_clefts())
+print "Has annotations: " + str(file.has_annotations())
+
 # Read everything there is.
 #
 # If you are using the padded versions of the datasets (where raw is larger to 
