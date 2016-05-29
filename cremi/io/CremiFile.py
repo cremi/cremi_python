@@ -21,10 +21,33 @@ class CremiFile(object):
             except ValueError:
                 pass
 
+    def __create_dataset(self, path, data, dtype, compression = None):
+        """Wrapper around h5py's create_dataset. Creates the group, if not 
+        existing. Deletes a previous dataset, if existing and not compatible. 
+        Otherwise, replaces the dataset.
+        """
+
+        group = "/".join(path.split("/")[:-1])
+        ds_name = path.split("/")[-1]
+
+        self.__create_group(group)
+
+        if ds_name in self.h5file[group]:
+
+            ds = self.h5file[path]
+            if ds.dtype == dtype and ds.shape == np.array(data).shape:
+                print "overwriting existing dataset"
+                ds = data
+                return
+
+            del self.h5file[path]
+
+        print "create new"
+        self.h5file.create_dataset(path, data=data, dtype=dtype, compression=compression)
+
     def __write_volume(self, volume, ds_name, resolution, offset, dtype, comment):
 
-        self.__create_group("/".join(ds_name.split("/")[:-1]))
-        self.h5file.create_dataset(ds_name, data=volume, dtype=dtype)
+        self.__create_dataset(ds_name, data=volume, dtype=dtype)
         self.h5file[ds_name].attrs["resolution"] = resolution
         if comment is not None:
             self.h5file[ds_name].attrs["comment"] = str(comment)
@@ -84,18 +107,16 @@ class CremiFile(object):
         if offset != (0.0, 0.0, 0.0):
             self.h5file["/annotations"].attrs["offset"] = offset
 
-        self.h5file.create_dataset("/annotations/ids", data=annotations.ids(), dtype=np.uint64)
-        self.h5file.create_dataset("/annotations/types", data=annotations.types(), dtype=h5py.special_dtype(vlen=unicode), compression="gzip")
-        self.h5file.create_dataset("/annotations/locations", data=annotations.locations(), dtype=np.double)
+        self.__create_dataset("/annotations/ids", data=annotations.ids(), dtype=np.uint64)
+        self.__create_dataset("/annotations/types", data=annotations.types(), dtype=h5py.special_dtype(vlen=unicode), compression="gzip")
+        self.__create_dataset("/annotations/locations", data=annotations.locations(), dtype=np.double)
 
         if len(annotations.comments) > 0:
-            self.__create_group("/annotations/comments")
-            self.h5file.create_dataset("/annotations/comments/target_ids", data=annotations.comments.keys(), dtype=np.uint64)
-            self.h5file.create_dataset("/annotations/comments/comments", data=annotations.comments.values(), dtype=h5py.special_dtype(vlen=unicode))
+            self.__create_dataset("/annotations/comments/target_ids", data=annotations.comments.keys(), dtype=np.uint64)
+            self.__create_dataset("/annotations/comments/comments", data=annotations.comments.values(), dtype=h5py.special_dtype(vlen=unicode))
 
         if len(annotations.pre_post_partners) > 0:
-            self.__create_group("/annotations/presynaptic_site")
-            self.h5file.create_dataset("/annotations/presynaptic_site/partners", data=annotations.pre_post_partners, dtype=np.uint64)
+            self.__create_dataset("/annotations/presynaptic_site/partners", data=annotations.pre_post_partners, dtype=np.uint64)
 
     def has_raw(self):
         """Check if this file contains a raw volume.
