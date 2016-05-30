@@ -42,12 +42,11 @@ class CremiFile(object):
 
             del self.h5file[path]
 
-        print "create new"
         self.h5file.create_dataset(path, data=data, dtype=dtype, compression=compression)
 
     def __write_volume(self, volume, ds_name, resolution, offset, dtype, comment):
 
-        self.__create_dataset(ds_name, data=volume, dtype=dtype)
+        self.__create_dataset(ds_name, data=volume, dtype=dtype, compression="gzip")
         self.h5file[ds_name].attrs["resolution"] = resolution
         if comment is not None:
             self.h5file[ds_name].attrs["comment"] = str(comment)
