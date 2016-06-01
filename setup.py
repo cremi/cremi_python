@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='cremi',
-    version='0.4',
+    version='0.5',
     description='Python Package for the CREMI Challenge',
     author='Jan Funke',
     author_email='jfunke@iri.upc.edu',
