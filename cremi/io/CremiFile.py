@@ -1,6 +1,7 @@
 import h5py
 import numpy as np
 from .. import Annotations
+from .. import Volume
 
 class CremiFile(object):
 
@@ -44,55 +45,48 @@ class CremiFile(object):
 
         self.h5file.create_dataset(path, data=data, dtype=dtype, compression=compression)
 
-    def __write_volume(self, volume, ds_name, resolution, offset, dtype, comment):
+    def __write_volume(self, volume, ds_name, dtype):
 
-        self.__create_dataset(ds_name, data=volume, dtype=dtype, compression="gzip")
-        self.h5file[ds_name].attrs["resolution"] = resolution
-        if comment is not None:
-            self.h5file[ds_name].attrs["comment"] = str(comment)
-        if offset != (0.0, 0.0, 0.0):
-            self.h5file[ds_name].attrs["offset"] = offset
+        self.__create_dataset(ds_name, data=volume.data, dtype=dtype, compression="gzip")
+        self.h5file[ds_name].attrs["resolution"] = volume.resolution
+        if volume.comment is not None:
+            self.h5file[ds_name].attrs["comment"] = str(volume.comment)
+        if volume.offset != (0.0, 0.0, 0.0):
+            self.h5file[ds_name].attrs["offset"] = volume.offset
 
     def __read_volume(self, ds_name):
 
-        volume = self.h5file[ds_name]
-        resolution = self.h5file[ds_name].attrs["resolution"]
-        offset = (0.0, 0.0, 0.0)
-        if "offset" in self.h5file[ds_name].attrs:
-            offset = self.h5file[ds_name].attrs["offset"]
-        comment = None
-        if "comment" in self.h5file[ds_name].attrs:
-            comment = self.h5file[ds_name].attrs["comment"]
+        volume = Volume(self.h5file[ds_name])
 
-        return (volume, resolution, offset, comment)
+        volume.resolution = self.h5file[ds_name].attrs["resolution"]
+        if "offset" in self.h5file[ds_name].attrs:
+            volume.offset = self.h5file[ds_name].attrs["offset"]
+        if "comment" in self.h5file[ds_name].attrs:
+            volume.comment = self.h5file[ds_name].attrs["comment"]
+
+        return volume
 
     def __has_volume(self, ds_name):
 
         return ds_name in self.h5file
 
-    def write_raw(self, raw, resolution, comment = None):
-        """Write a raw volume with the given resolution.
-        The resolution is the size of a voxel (depth, height, width) in nm.
-        Optionally, a comment string can be attached.
+    def write_raw(self, raw):
+        """Write a raw volume.
         """
 
-        self.__write_volume(raw, "/volumes/raw", resolution, (0, 0, 0), np.uint8, comment)
+        self.__write_volume(raw, "/volumes/raw", np.uint8)
 
-    def write_neuron_ids(self, neuron_ids, resolution, offset = (0.0, 0.0, 0.0), comment = None):
-        """Write a volume of segmented neurons with the given resolution.
-        The resolution is the size of a voxel (depth, height, width) in nm.
-        Optionally, an offset in nm (relative to (0,0,0) of the raw volume) and a comment string can be given.
+    def write_neuron_ids(self, neuron_ids):
+        """Write a volume of segmented neurons.
         """
 
-        self.__write_volume(neuron_ids, "/volumes/labels/neuron_ids", resolution, offset, np.uint64, comment)
+        self.__write_volume(neuron_ids, "/volumes/labels/neuron_ids", np.uint64)
 
-    def write_clefts(self, clefts, resolution, offset = (0.0, 0.0, 0.0), comment = None):
-        """Write a volume of segmented synaptic clefts with the given resolution.
-        The resolution is the size of a voxel (depth, height, width) in nm.
-        Optionally, an offset in nm (relative to (0,0,0) of the raw volume) and a comment string can be given.
+    def write_clefts(self, clefts):
+        """Write a volume of segmented synaptic clefts.
         """
 
-        self.__write_volume(clefts, "/volumes/labels/clefts", resolution, offset, np.uint64, comment)
+        self.__write_volume(clefts, "/volumes/labels/clefts", np.uint64)
 
     def write_annotations(self, annotations):
         """Write pre- and post-synaptic site annotations.

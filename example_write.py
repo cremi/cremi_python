@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from cremi import Annotations
+from cremi import Annotations, Volume
 from cremi.io import CremiFile
 import numpy as np
 import random
@@ -23,11 +23,14 @@ file = CremiFile("example.hdf", "w")
 
 # Write the raw volume. This is given here just for illustration. For your 
 # submission, you don't need to store the raw data. We have it already.
-file.write_raw(np.zeros((10,100,100), dtype=np.uint8), (40.0, 4.0, 4.0))
+raw = Volume(np.zeros((10,100,100), dtype=np.uint8), resolution=(40.0, 4.0, 4.0))
+file.write_raw(raw)
 
 # Write volumes representing the neuron and synaptic cleft segmentation.
-file.write_neuron_ids(np.zeros((10,100,100), dtype=np.uint64), (40.0, 4.0, 4.0), comment="just zeros")
-file.write_clefts(np.zeros((10,100,100), dtype=np.uint64), (40.0, 4.0, 4.0), comment="just zeros")
+neuron_ids = Volume(np.zeros((10,100,100), dtype=np.uint64), resolution=(40.0, 4.0, 4.0), comment="just zeros")
+clefts = Volume(np.zeros((10,100,100), dtype=np.uint64), resolution=(40.0, 4.0, 4.0), comment="just zeros")
+file.write_neuron_ids(neuron_ids)
+file.write_clefts(clefts)
 
 # Write synaptic partner annotations.
 file.write_annotations(annotations)

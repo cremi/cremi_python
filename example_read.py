@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from cremi import Annotations
+from cremi import Annotations, Volume
 from cremi.io import CremiFile
 import numpy as np
 import random
@@ -22,25 +22,25 @@ print "Has annotations: " + str(file.has_annotations())
 #
 # In other words, neuron_ids, clefts, and annotations are exactly the same 
 # between the padded and unpadded versions, except for the offset attribute.
-(raw, raw_resolution, raw_offset, raw_comment) = file.read_raw()
-(neuron_ids, neuron_ids_resolution, neuron_ids_offset, neuron_ids_comment) = file.read_neuron_ids()
-(clefts, clefts_resolution, clefts_offset, clefts_comment) = file.read_clefts()
+raw = file.read_raw()
+neuron_ids = file.read_neuron_ids()
+clefts = file.read_clefts()
 annotations = file.read_annotations()
 
 print "Read raw: " + str(raw) + \
-    ", resolution " + str(raw_resolution) + \
-    ", offset " + str(raw_offset) + \
-    ("" if raw_comment == None else ", comment \"" + raw_comment + "\"")
+    ", resolution " + str(raw.resolution) + \
+    ", offset " + str(raw.offset) + \
+    ("" if raw.comment == None else ", comment \"" + raw.comment + "\"")
 
 print "Read neuron_ids: " + str(neuron_ids) + \
-    ", resolution " + str(neuron_ids_resolution) + \
-    ", offset " + str(neuron_ids_offset) + \
-    ("" if neuron_ids_comment == None else ", comment \"" + neuron_ids_comment + "\"")
+    ", resolution " + str(neuron_ids.resolution) + \
+    ", offset " + str(neuron_ids.offset) + \
+    ("" if neuron_ids.comment == None else ", comment \"" + neuron_ids.comment + "\"")
 
 print "Read clefts: " + str(clefts) + \
-    ", resolution " + str(clefts_resolution) + \
-    ", offset " + str(clefts_offset) + \
-    ("" if clefts_comment == None else ", comment \"" + clefts_comment + "\"")
+    ", resolution " + str(clefts.resolution) + \
+    ", offset " + str(clefts.offset) + \
+    ("" if clefts.comment == None else ", comment \"" + clefts.comment + "\"")
 
 print "Read annotations:"
 for (id, type, location) in zip(annotations.ids(), annotations.types(), annotations.locations()):
