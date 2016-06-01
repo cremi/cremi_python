@@ -94,17 +94,16 @@ class CremiFile(object):
 
         self.__write_volume(clefts, "/volumes/labels/clefts", resolution, offset, np.uint64, comment)
 
-    def write_annotations(self, annotations, offset = (0.0, 0.0, 0.0)):
+    def write_annotations(self, annotations):
         """Write pre- and post-synaptic site annotations.
-        Optionally, an offset in nm (relative to (0,0,0) of the raw volume) can be given.
         """
 
         if len(annotations.ids()) == 0:
             return
 
         self.__create_group("/annotations")
-        if offset != (0.0, 0.0, 0.0):
-            self.h5file["/annotations"].attrs["offset"] = offset
+        if annotations.offset != (0.0, 0.0, 0.0):
+            self.h5file["/annotations"].attrs["offset"] = annotations.offset
 
         self.__create_dataset("/annotations/ids", data=annotations.ids(), dtype=np.uint64)
         self.__create_dataset("/annotations/types", data=annotations.types(), dtype=h5py.special_dtype(vlen=unicode), compression="gzip")
@@ -163,13 +162,14 @@ class CremiFile(object):
         """
 
         annotations = Annotations()
-        offset = (0.0, 0.0, 0.0)
 
         if not "/annotations" in self.h5file:
-            return (annotations, offset)
+            return annotations
 
+        offset = (0.0, 0.0, 0.0)
         if "offset" in self.h5file["/annotations"].attrs:
             offset = self.h5file["/annotations"].attrs["offset"]
+        annotations.offset = offset
 
         ids = self.h5file["/annotations/ids"]
         types = self.h5file["/annotations/types"]
@@ -188,7 +188,7 @@ class CremiFile(object):
             for (pre, post) in pre_post:
                 annotations.set_pre_post_partners(pre, post)
 
-        return (annotations, offset)
+        return annotations
 
     def close(self):
 

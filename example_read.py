@@ -25,7 +25,7 @@ print "Has annotations: " + str(file.has_annotations())
 (raw, raw_resolution, raw_offset, raw_comment) = file.read_raw()
 (neuron_ids, neuron_ids_resolution, neuron_ids_offset, neuron_ids_comment) = file.read_neuron_ids()
 (clefts, clefts_resolution, clefts_offset, clefts_comment) = file.read_clefts()
-(annotations, annotations_offset) = file.read_annotations()
+annotations = file.read_annotations()
 
 print "Read raw: " + str(raw) + \
     ", resolution " + str(raw_resolution) + \
@@ -44,7 +44,7 @@ print "Read clefts: " + str(clefts) + \
 
 print "Read annotations:"
 for (id, type, location) in zip(annotations.ids(), annotations.types(), annotations.locations()):
-    print str(id) + " of type " + type + " at " + str(np.array(location)+np.array(annotations_offset))
+    print str(id) + " of type " + type + " at " + str(np.array(location)+np.array(annotations.offset))
 print "Pre- and post-synaptic partners:"
 for (pre, post) in annotations.pre_post_partners:
     print str(pre) + " -> " + str(post)
