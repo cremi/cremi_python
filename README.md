@@ -39,16 +39,15 @@ The `CremiFile` class provides read and write methods for each of the challenge
 datasets. To read the neuron IDs in the training volumes, for example, use
 `read_neuron_ids()`:
 ```python
-(neuron_ids, neuron_ids_resolution, neuron_ids_offset, neuron_ids_comment) = file.read_neuron_ids()
+neuron_ids = file.read_neuron_ids()
 ```
-This returns the `neuron_ids` as a `numpy` array, along with some meta-information. If you are using the padded version of the volumes, `neuron_ids_offset` will contain the starting point of `neuron_ids` inside the `raw` volume. Note that these numbers are given in nm.
+This returns the `neuron_ids` as a `cremi.Volume`, which contains a numpy array (`neuron_ids.data`) and some meta-information. If you are using the padded version of the volumes, `neuron_ids.offset` will contain the starting point of `neuron_ids` inside the `raw` volume. Note that these numbers are given in nm.
 
 To save a dataset, use the appropriate write method, e.g.,:
 ```
-file.write_neuron_ids(neuron_ids, (40.0, 4.0, 4.0), comment="λ=0.1, LP relaxation + rounding")
+file.write_neuron_ids(neuron_ids)
 ```
-Here, you can optionally give a comment for your own convenience. It will not
-be visible on the challenge website.
+See the included `example_read.py` and `example_write.py` for more details.
 
 Evaluation
 ----------
