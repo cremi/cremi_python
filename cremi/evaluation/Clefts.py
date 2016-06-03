@@ -5,8 +5,8 @@ class Clefts:
 
     def __init__(self, test, truth):
 
-        test_clefts = test.read_clefts()
-        truth_clefts = truth.read_clefts()
+        test_clefts = test
+        truth_clefts = truth
 
         self.test_clefts_mask = np.equal(test_clefts.data, 0xffffffffffffffff)
         self.truth_clefts_mask = np.equal(truth_clefts.data, 0xffffffffffffffff)
