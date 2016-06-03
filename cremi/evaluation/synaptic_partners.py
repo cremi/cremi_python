@@ -15,7 +15,9 @@ def synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, m
     gt_segmentation: Volume, ground truth neuron segmentation
 
     matching_threshold: float, world units
-        Euclidean distance threshold to consder two annotations a potential match.
+        Euclidean distance threshold to consider two annotations a potential
+        match. Annotations that are `matching_threshold` or more untis apart
+        from each other are not considered as potential matches.
 
     all_stats: boolean, optional
         Whether to also return precision, recall, FP, FN, and matches as a 6-tuple with f-score
