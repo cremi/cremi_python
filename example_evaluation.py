@@ -5,9 +5,8 @@ from cremi.evaluation import NeuronIds, Clefts, SynapticPartners
 
 test = CremiFile('test.hdf', 'r')
 truth = CremiFile('groundtruth.hdf', 'r')
-threshold = 200 # in nm
 
-neuron_ids_evaluation = NeuronIds(truth.read_neuron_ids(), border_threshold = threshold)
+neuron_ids_evaluation = NeuronIds(truth.read_neuron_ids())
 
 (voi_split, voi_merge) = neuron_ids_evaluation.voi(test.read_neuron_ids())
 adapted_rand = neuron_ids_evaluation.adapted_rand(test.read_neuron_ids())
