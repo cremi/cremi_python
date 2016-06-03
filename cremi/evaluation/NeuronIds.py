@@ -1,6 +1,7 @@
 import numpy as np
 from border_mask import create_border_mask
 from voi import voi
+from rand import adapted_rand
 
 class NeuronIds:
 
@@ -50,4 +51,13 @@ class NeuronIds:
 
         print "Computing VOI..."
 
-        return voi(np.array(segmentation.data), self.gt, ignore_groundtruth = [ np.uint64(-1) ])
+        return voi(np.array(segmentation.data), self.gt, ignore_groundtruth = [0])
+
+    def adapted_rand(self, segmentation):
+
+        assert segmentation.data.shape == self.groundtruth.data.shape
+        assert (segmentation.resolution == self.groundtruth.resolution).all()
+
+        print "Computing RAND..."
+
+        return adapted_rand(np.array(segmentation.data), self.gt)

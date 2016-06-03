@@ -6,7 +6,7 @@ import scipy.sparse as sparse
 # Evaluation code courtesy of Juan Nunez-Iglesias, taken from
 # https://github.com/janelia-flyem/gala/blob/master/gala/evaluate.py
 
-def adapted_rand_error(seg, gt, all_stats=False):
+def adapted_rand(seg, gt, all_stats=False):
     """Compute Adapted Rand error as defined by the SNEMI3D contest [1]
 
     Formula is given as 1 - the maximal F-score of the Rand index 
