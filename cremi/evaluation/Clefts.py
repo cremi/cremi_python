@@ -1,8 +1,5 @@
-import h5py
 import numpy as np
-from cremi.io import CremiFile
 from scipy import ndimage
-import math
 
 class Clefts:
 
@@ -11,11 +8,11 @@ class Clefts:
         test_clefts = test.read_clefts()
         truth_clefts = truth.read_clefts()
 
-        self.test_clefts_mask = np.equal(test_clefts[0], 0xffffffffffffffff)
-        self.truth_clefts_mask = np.equal(truth_clefts[0], 0xffffffffffffffff)
+        self.test_clefts_mask = np.equal(test_clefts.data, 0xffffffffffffffff)
+        self.truth_clefts_mask = np.equal(truth_clefts.data, 0xffffffffffffffff)
 	
-        self.test_clefts_edt = ndimage.distance_transform_edt(self.test_clefts_mask, sampling=test_clefts[1])
-        self.truth_clefts_edt = ndimage.distance_transform_edt(self.truth_clefts_mask, sampling=truth_clefts[1])
+        self.test_clefts_edt = ndimage.distance_transform_edt(self.test_clefts_mask, sampling=test_clefts.resolution)
+        self.truth_clefts_edt = ndimage.distance_transform_edt(self.truth_clefts_mask, sampling=truth_clefts.resolution)
 
     def count_false_positives(self, threshold):
 
