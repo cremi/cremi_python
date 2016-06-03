@@ -19,8 +19,8 @@ print "\tadapted RAND: " + str(adapted_rand)
 
 clefts_evaluation = Clefts(test.read_clefts(), truth.read_clefts())
 
-false_positive_threshold_count = clefts_evaluation.count_false_positives(threshold)
-false_negative_threshold_count = clefts_evaluation.count_false_negatives(threshold)
+false_positive_count = clefts_evaluation.count_false_positives()
+false_negative_count = clefts_evaluation.count_false_negatives()
 
 false_positive_stats = clefts_evaluation.acc_false_positives()
 false_negative_stats = clefts_evaluation.acc_false_negatives()
@@ -28,11 +28,11 @@ false_negative_stats = clefts_evaluation.acc_false_negatives()
 print "Clefts"
 print "======"
 
-print "\tfalse positives above threshold " + str(threshold) + "nm: " + str(false_positive_threshold_count)
-print "\tfalse negatives above threshold " + str(threshold) + "nm: " + str(false_negative_threshold_count)
+print "\tfalse positives: " + str(false_positive_count)
+print "\tfalse negatives: " + str(false_negative_count)
 
-print "\tfalse positive stats: " + str(false_positive_stats)
-print "\tfalse negative stats: " + str(false_negative_stats)
+print "\tdistance to ground truth: " + str(false_positive_stats)
+print "\tdistance to proposal    : " + str(false_negative_stats)
 
 synaptic_partners_evaluation = SynapticPartners()
 fscore = synaptic_partners_evaluation.fscore(test.read_annotations(), truth.read_annotations(), truth.read_neuron_ids())

@@ -65,8 +65,8 @@ neuron_ids_evaluation = NeuronIds(truth.read_neuron_ids())
 adapted_rand = neuron_ids_evaluation.adapted_rand(test.read_neuron_ids())
 
 clefts_evaluation = Clefts(test.read_clefts(), truth.read_clefts())
-fp_threshold_count = clefts_evaluation.count_false_positives(threshold)
-fn_threshold_count = clefts_evaluation.count_false_negatives(threshold)
+fp_count = clefts_evaluation.count_false_positives()
+fn_count = clefts_evaluation.count_false_negatives()
 fp_stats = clefts_evaluation.acc_false_positives()
 fn_stats = clefts_evaluation.acc_false_negatives()
 

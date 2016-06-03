@@ -38,7 +38,7 @@ class NeuronIds:
                 float(border_threshold)/groundtruth.resolution[1],
                 np.uint64(-1))
         else:
-            self.gt = self.groundtruth.data.copy()
+            self.gt = np.array(self.groundtruth.data).copy()
 
         # current voi and rand implementations don't work with np.uint64(-1) as
         # background label, so we make it 0 here and bump all other labels
