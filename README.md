@@ -57,7 +57,7 @@ For each of the challenge categories, you find an evaluation class in
 
 After you read a test file `test` and a ground truth file `truth`, you can
 evaluate your results by instantiating these classes as follows:
-```
+```python
 from cremi.evaluation import NeuronIds, Clefts, SynapticPartners
 
 neuron_ids_evaluation = NeuronIds(truth.read_neuron_ids())
@@ -71,7 +71,10 @@ fp_stats = clefts_evaluation.acc_false_positives()
 fn_stats = clefts_evaluation.acc_false_negatives()
 
 synaptic_partners_evaluation = SynapticPartners()
-fscore = synaptic_partners_evaluation.fscore(test.read_annotations(), truth.read_annotations(), truth.read_neuron_ids())
+fscore = synaptic_partners_evaluation.fscore(
+    test.read_annotations(),
+    truth.read_annotations(),
+    truth.read_neuron_ids())
 ```
 See the included `example_evaluate.py` for more details. The metrics are
 described in more detail on the [CREMI Challenge website](http://cremi.org/metrics/).
