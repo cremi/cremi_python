@@ -27,7 +27,7 @@ raw = Volume(np.zeros((10,100,100), dtype=np.uint8), resolution=(40.0, 4.0, 4.0)
 file.write_raw(raw)
 
 # Write volumes representing the neuron and synaptic cleft segmentation.
-neuron_ids = Volume(np.zeros((10,100,100), dtype=np.uint64), resolution=(40.0, 4.0, 4.0), comment="just zeros")
+neuron_ids = Volume(np.ones((10,100,100), dtype=np.uint64), resolution=(40.0, 4.0, 4.0), comment="just ones")
 clefts = Volume(np.zeros((10,100,100), dtype=np.uint64), resolution=(40.0, 4.0, 4.0), comment="just zeros")
 file.write_neuron_ids(neuron_ids)
 file.write_clefts(clefts)
