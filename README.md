@@ -84,6 +84,7 @@ Acknowledgements
 
 Evaluation code contributed by:
 
+  * [Jan Funke](https://github.com/funkey)
   * [Juan Nunez-Iglesias](http://github.com/jni)
   * [Philipp Hanslovsky](http://github.com/hanslovsky)
   * [Stephan Saalfeld](http://github.com/axtimwalde)
