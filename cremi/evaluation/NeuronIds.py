@@ -46,8 +46,8 @@ class NeuronIds:
 
     def voi(self, segmentation):
 
-        assert segmentation.data.shape == self.groundtruth.data.shape
-        assert (segmentation.resolution == self.groundtruth.resolution).all()
+        assert list(segmentation.data.shape) == list(self.groundtruth.data.shape)
+        assert list(segmentation.resolution) == list(self.groundtruth.resolution)
 
         print "Computing VOI..."
 
@@ -55,8 +55,8 @@ class NeuronIds:
 
     def adapted_rand(self, segmentation):
 
-        assert segmentation.data.shape == self.groundtruth.data.shape
-        assert (segmentation.resolution == self.groundtruth.resolution).all()
+        assert list(segmentation.data.shape) == list(self.groundtruth.data.shape)
+        assert list(segmentation.resolution) == list(self.groundtruth.resolution)
 
         print "Computing RAND..."
 
