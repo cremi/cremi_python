@@ -6,6 +6,6 @@ class SynapticPartners:
 
         self.matching_threshold = matching_threshold
 
-    def fscore(self, rec_annotations, gt_annotations, gt_segmentation):
+    def fscore(self, rec_annotations, gt_annotations, gt_segmentation, all_stats = False):
 
-        return synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, self.matching_threshold)
+        return synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, self.matching_threshold, all_stats)
