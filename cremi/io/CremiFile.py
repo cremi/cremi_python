@@ -38,7 +38,7 @@ class CremiFile(object):
             ds = self.h5file[path]
             if ds.dtype == dtype and ds.shape == np.array(data).shape:
                 print "overwriting existing dataset"
-                ds = data
+                self.h5file[path] = data
                 return
 
             del self.h5file[path]
@@ -120,6 +120,11 @@ class CremiFile(object):
         """
         return self.__has_volume("/volumes/labels/neuron_ids")
 
+    def has_neuron_ids_confidence(self):
+        """Check if this file contains confidence information about neuron ids.
+        """
+        return self.__has_volume("/volumes/labels/neuron_ids_confidence")
+
     def has_clefts(self):
         """Check if this file contains synaptic clefts.
         """
@@ -130,23 +135,49 @@ class CremiFile(object):
         """
         return "/annotations" in self.h5file
 
+    def has_segment_annotations(self):
+        """Check if this file contains segment annotations.
+        """
+        return "/annotations" in self.h5file
+
     def read_raw(self):
         """Read the raw volume.
-        Returns a tuple (volume, resolution, offset, comment).
+        Returns a Volume.
         """
 
         return self.__read_volume("/volumes/raw")
 
     def read_neuron_ids(self):
         """Read the volume of segmented neurons.
-        Returns a tuple (volume, resolution, offset, comment).
+        Returns a Volume.
         """
 
         return self.__read_volume("/volumes/labels/neuron_ids")
 
+    def read_neuron_ids_confidence(self):
+        """Read confidence information about neuron ids.
+        Returns Confidences.
+        """
+
+        confidences = Confidences(num_levels=2)
+        if not self.has_neuron_ids_confidence():
+            return confidences
+
+        data = self.h5file["/volumes/labels/neuron_ids_confidence"]
+        i = 0
+        while i < len(data):
+            level = data[i]
+            i += 1
+            num_ids = data[i]
+            i += 1
+            confidences.add_all(level, data[i:i+num_ids])
+            i += num_ids
+
+        return confidences
+
     def read_clefts(self):
         """Read the volume of segmented synaptic clefts.
-        Returns a tuple (volume, resolution, offset, comment).
+        Returns a Volume.
         """
 
         return self.__read_volume("/volumes/labels/clefts")
