@@ -8,8 +8,10 @@ class Clefts:
         test_clefts = test
         truth_clefts = truth
 
-        self.test_clefts_mask = np.equal(test_clefts.data, 0xffffffffffffffff)
-        self.truth_clefts_mask = np.equal(truth_clefts.data, 0xffffffffffffffff)
+        self.truth_clefts_invalid = truth_clefts.data.value == 0xfffffffffffffffe
+
+        self.test_clefts_mask = np.logical_or(test_clefts.data.value == 0xffffffffffffffff, self.truth_clefts_invalid)
+        self.truth_clefts_mask = np.logical_or(truth_clefts.data.value == 0xffffffffffffffff, self.truth_clefts_invalid)
 	
         self.test_clefts_edt = ndimage.distance_transform_edt(self.test_clefts_mask, sampling=test_clefts.resolution)
         self.truth_clefts_edt = ndimage.distance_transform_edt(self.truth_clefts_mask, sampling=truth_clefts.resolution)
@@ -51,5 +53,4 @@ class Clefts:
             'count': false_negatives.size,
             'median': np.median(false_negatives)}
         return stats
-
 
