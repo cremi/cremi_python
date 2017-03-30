@@ -41,7 +41,7 @@ datasets. To read the neuron IDs in the training volumes, for example, use
 ```python
 neuron_ids = file.read_neuron_ids()
 ```
-This returns the `neuron_ids` as a `cremi.Volume`, which contains a numpy array (`neuron_ids.data`) and some meta-information. If you are using the padded version of the volumes, `neuron_ids.offset` will contain the starting point of `neuron_ids` inside the `raw` volume. Note that these numbers are given in nm.
+This returns the `neuron_ids` as a `cremi.Volume`, which contains an HDF5 dataset (`neuron_ids.data`) and some meta-information. If you are using the padded version of the volumes, `neuron_ids.offset` will contain the starting point of `neuron_ids` inside the `raw` volume. Note that these numbers are given in nm.
 
 To save a dataset, use the appropriate write method, e.g.,:
 ```
