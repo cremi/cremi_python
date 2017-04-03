@@ -51,7 +51,7 @@ class CremiFile(object):
         self.h5file[ds_name].attrs["resolution"] = volume.resolution
         if volume.comment is not None:
             self.h5file[ds_name].attrs["comment"] = str(volume.comment)
-        if volume.offset != (0.0, 0.0, 0.0):
+        if tuple(volume.offset) != (0.0, 0.0, 0.0):
             self.h5file[ds_name].attrs["offset"] = volume.offset
 
     def __read_volume(self, ds_name):
@@ -96,7 +96,7 @@ class CremiFile(object):
             return
 
         self.__create_group("/annotations")
-        if annotations.offset != (0.0, 0.0, 0.0):
+        if tuple(annotations.offset) != (0.0, 0.0, 0.0):
             self.h5file["/annotations"].attrs["offset"] = annotations.offset
 
         self.__create_dataset("/annotations/ids", data=annotations.ids(), dtype=np.uint64)
