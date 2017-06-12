@@ -51,7 +51,7 @@ def adapted_rand(seg, gt, all_stats=False):
     a = p_ij[1:n_labels_A,:]
     b = p_ij[1:n_labels_A,1:n_labels_B]
     c = p_ij[1:n_labels_A,0].todense()
-    d = np.array(b.todense()) ** 2
+    d = b.multiply(b)
 
     a_i = np.array(a.sum(1))
     b_i = np.array(b.sum(0))
