@@ -45,7 +45,7 @@ class CremiFile(object):
 
         self.h5file.create_dataset(path, data=data, dtype=dtype, compression=compression)
 
-    def __write_volume(self, volume, ds_name, dtype):
+    def write_volume(self, volume, ds_name, dtype):
 
         self.__create_dataset(ds_name, data=volume.data, dtype=dtype, compression="gzip")
         self.h5file[ds_name].attrs["resolution"] = volume.resolution
@@ -54,7 +54,7 @@ class CremiFile(object):
         if tuple(volume.offset) != (0.0, 0.0, 0.0):
             self.h5file[ds_name].attrs["offset"] = volume.offset
 
-    def __read_volume(self, ds_name):
+    def read_volume(self, ds_name):
 
         volume = Volume(self.h5file[ds_name])
 
@@ -74,19 +74,19 @@ class CremiFile(object):
         """Write a raw volume.
         """
 
-        self.__write_volume(raw, "/volumes/raw", np.uint8)
+        self.write_volume(raw, "/volumes/raw", np.uint8)
 
     def write_neuron_ids(self, neuron_ids):
         """Write a volume of segmented neurons.
         """
 
-        self.__write_volume(neuron_ids, "/volumes/labels/neuron_ids", np.uint64)
+        self.write_volume(neuron_ids, "/volumes/labels/neuron_ids", np.uint64)
 
     def write_clefts(self, clefts):
         """Write a volume of segmented synaptic clefts.
         """
 
-        self.__write_volume(clefts, "/volumes/labels/clefts", np.uint64)
+        self.write_volume(clefts, "/volumes/labels/clefts", np.uint64)
 
     def write_annotations(self, annotations):
         """Write pre- and post-synaptic site annotations.
@@ -145,14 +145,14 @@ class CremiFile(object):
         Returns a Volume.
         """
 
-        return self.__read_volume("/volumes/raw")
+        return self.read_volume("/volumes/raw")
 
     def read_neuron_ids(self):
         """Read the volume of segmented neurons.
         Returns a Volume.
         """
 
-        return self.__read_volume("/volumes/labels/neuron_ids")
+        return self.read_volume("/volumes/labels/neuron_ids")
 
     def read_neuron_ids_confidence(self):
         """Read confidence information about neuron ids.
@@ -180,7 +180,7 @@ class CremiFile(object):
         Returns a Volume.
         """
 
-        return self.__read_volume("/volumes/labels/clefts")
+        return self.read_volume("/volumes/labels/clefts")
 
     def read_annotations(self):
         """Read pre- and post-synaptic site annotations.
