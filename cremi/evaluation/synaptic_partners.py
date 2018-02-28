@@ -1,5 +1,5 @@
 # coding=utf-8
-from munkres import Munkres
+from scipy.optimize import linear_sum_assignment
 import numpy as np
 
 def synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, matching_threshold = 400, all_stats = False):
@@ -40,8 +40,8 @@ def synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, m
 
     # match using Hungarian method
     print "Finding cost-minimal matches..."
-    munkres = Munkres()
-    matches = munkres.compute(costs.copy()) # have to copy, because munkres changes the cost matrix...
+    matches = linear_sum_assignment(costs - np.amax(costs) - 1)
+    matches = zip(matches[0], matches[1])  # scipy returns matches as numpy arrays
 
     filtered_matches = [ (i,j, costs[i][j]) for (i,j) in matches if costs[i][j] <= matching_threshold ]
     print str(len(filtered_matches)) + " matches found"
