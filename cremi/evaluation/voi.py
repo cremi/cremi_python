@@ -38,8 +38,8 @@ def voi(reconstruction, groundtruth, ignore_reconstruction=[], ignore_groundtrut
     [1] Meila, M. (2007). Comparing clusterings - an information based 
     distance. Journal of Multivariate Analysis 98, 873-895.
     """
-    (hyxg, hxgy) = split_vi(reconstruction, groundtruth, ignore_reconstruction, ignore_groundtruth)
-    return (hxgy, hyxg)
+    (hygx, hxgy) = split_vi(reconstruction, groundtruth, ignore_reconstruction, ignore_groundtruth)
+    return (hxgy, hygx)
 
 def split_vi(x, y=None, ignore_x=[0], ignore_y=[0]):
     """Return the symmetric conditional entropies associated with the VI.
