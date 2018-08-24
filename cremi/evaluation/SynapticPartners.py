@@ -1,4 +1,5 @@
-from synaptic_partners import synaptic_partners_fscore
+from __future__ import absolute_import
+from .synaptic_partners import synaptic_partners_fscore
 
 class SynapticPartners:
 

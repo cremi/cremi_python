@@ -1,7 +1,8 @@
+from __future__ import absolute_import
 import numpy as np
-from border_mask import create_border_mask
-from voi import voi
-from rand import adapted_rand
+from .border_mask import create_border_mask
+from .voi import voi
+from .rand import adapted_rand
 
 class NeuronIds:
 
