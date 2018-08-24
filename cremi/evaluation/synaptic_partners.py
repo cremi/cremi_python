@@ -1,4 +1,5 @@
 # coding=utf-8
+from __future__ import print_function
 from scipy.optimize import linear_sum_assignment
 import numpy as np
 
@@ -39,12 +40,12 @@ def synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, m
     costs = cost_matrix(rec_annotations, gt_annotations, gt_segmentation, matching_threshold)
 
     # match using Hungarian method
-    print "Finding cost-minimal matches..."
+    print("Finding cost-minimal matches...")
     matches = linear_sum_assignment(costs - np.amax(costs) - 1)
     matches = zip(matches[0], matches[1])  # scipy returns matches as numpy arrays
 
     filtered_matches = [ (i,j, costs[i][j]) for (i,j) in matches if costs[i][j] <= matching_threshold ]
-    print str(len(filtered_matches)) + " matches found"
+    print(str(len(filtered_matches)) + " matches found")
 
     # unmatched in rec = FP
     fp = len(rec_annotations.pre_post_partners) - len(filtered_matches)
@@ -66,7 +67,7 @@ def synaptic_partners_fscore(rec_annotations, gt_annotations, gt_segmentation, m
 
 def cost_matrix(rec, gt, gt_segmentation, matching_threshold):
 
-    print "Computing matching costs..."
+    print("Computing matching costs...")
 
     rec_locations = pre_post_locations(rec, gt_segmentation)
     gt_locations = pre_post_locations(gt, gt_segmentation)
@@ -85,7 +86,7 @@ def cost_matrix(rec, gt, gt_segmentation, matching_threshold):
             if c <= matching_threshold:
                 num_potential_matches += 1
 
-    print str(num_potential_matches) + " potential matches found"
+    print(str(num_potential_matches) + " potential matches found")
 
     return costs
 

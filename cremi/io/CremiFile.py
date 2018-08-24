@@ -1,4 +1,4 @@
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 import h5py
 import numpy as np
 from .. import Annotations
@@ -38,7 +38,7 @@ class CremiFile(object):
 
             ds = self.h5file[path]
             if ds.dtype == dtype and ds.shape == np.array(data).shape:
-                print "overwriting existing dataset"
+                print("overwriting existing dataset")
                 self.h5file[path][:] = data[:]
                 return
 
